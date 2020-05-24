@@ -1,0 +1,97 @@
+import React, { useState, useEffect } from 'react'
+import styled from 'styled-components'
+import { getIssues } from '../utils/getIssues'
+import { getClosedIssues } from '../utils/getClosedIssues';
+import { getSoloIssue } from '../utils/getSoloIssue'
+
+
+const LeaderbordWrapper = styled.div`
+  text-align: center;
+`
+
+const UserPointsGroup = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  max-width: 75%;
+  margin: 0 auto;
+  margin-bottom: 2px;
+  border: solid thin white;
+  border-radius: 5px;
+`
+
+const InfoText = styled.p`
+  font-family: 'Courier New', serif;
+`
+//Returns a scores object {username : string, score : int}
+const calculateScores = async closedIssues =>{ 
+  
+  //A solo issue is different from the result of getIssues() because it includes the 'closed_by' key/value pair
+  const soloIssues = closedIssues.map(({number}) => getSoloIssue(number).then(res => res)); 
+  
+  //Maps over the array of solo issues and returns the GitHub username of all users who have closed an issue in the 'Answer These Questions' repository
+  const closers = soloIssues.map(async issue => await issue.then(res => res.closed_by.login)); 
+  
+  /*Maps over the closers array and constructs a the scores object; the score for each username increases each time
+  username is present in the array*/
+  const scores = await Promise.all(closers).then(res => res.reduce((scoreObj,closer) =>{
+                  const count = scoreObj[closer] || 0;
+                  scoreObj[closer] = count + 1;
+                  return scoreObj;
+                },{}));
+
+  return  scores;
+}
+
+//Returns an array of nested arrays that represent the user and their score => ['wijohnst',3]
+const getScores = async () =>{
+  
+  const scores = await getIssues() //Gets all issues
+                  .then(allIssues => getClosedIssues(allIssues)) //Returns only the closed issues
+                  .then(closedIssues => calculateScores(closedIssues)) //Calculates user scores for those closed issues
+                  .then(scoresObject => Object.entries(scoresObject)) //Converts score object into an array for rendering
+                  .then(scoresArray => scoresArray.map(score => score)); //Maps over key/val array
+
+  return scores;
+}
+
+export default function Leaderbord({advanceView}) {
+
+  const [scores, setScores] = useState(null);
+    
+  useEffect(() => {
+    getScores().then(res => setScores(res))
+  },[])
+
+  if(scores){ //Conditionally render based on scores array resolution
+    return(
+      <LeaderbordWrapper>
+        <h1>Leaderbord</h1>
+        <hr />
+        {scores.map((score,index) => //Maps over scores array
+            <UserPointsGroup key={`User_Score${index}`}>
+              <p><b>User:</b></p><InfoText>{score[index]}</InfoText> {/*Renders username*/}
+              <p><b>Closed Issues:</b></p><InfoText>{score[index + 1]}</InfoText>{/*Renders user score*/}
+            </UserPointsGroup>
+        )}
+        <button onClick={() => advanceView(0)}>Back</button>
+      </LeaderbordWrapper>
+      
+     )
+  }else{
+    return(
+      <p>Loading</p>
+    )
+  }
+  
+}
+
+      
+  
+
+
+
+// √get a list of closed issues
+//iterate over those issues, passing each issues to getSoloIssues() and push result to new arr
+//iterate over soloIssuesArr  
+//each time a user is listed as closing an issues, give them one point
+//reduce the list into an object like this [{userName : points}, {anotherUserName : points}]
