@@ -21,7 +21,7 @@ const LeaderboardWrapper = styled.div`
 `
 
 export default function App() {
-  const [view, setView] = useState(1) //Variable for controlling which view is displayed
+  const [view, setView] = useState(0) //Variable for controlling which view is displayed
   
   //Start view - contains 'how to' info and is the default view state; does not have access to app context 
   if(view === 0){ 
