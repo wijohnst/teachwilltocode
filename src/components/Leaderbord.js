@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
+import AppContext from '../AppContext'
 import { getIssues } from '../utils/getIssues'
 import { getClosedIssues } from '../utils/getClosedIssues';
 import { getSoloIssue } from '../utils/getSoloIssue'
@@ -23,10 +24,10 @@ const InfoText = styled.p`
   font-family: 'Courier New', serif;
 `
 //Returns a scores object {username : string, score : int}
-const calculateScores = async closedIssues =>{ 
+const calculateScores = async (closedIssues, authToken) =>{ 
   
   //A solo issue is different from the result of getIssues() because it includes the 'closed_by' key/value pair
-  const soloIssues = closedIssues.map(({number}) => getSoloIssue(number).then(res => res)); 
+  const soloIssues = closedIssues.map(({number}) => getSoloIssue(number, authToken).then(res => res)); 
   
   //Maps over the array of solo issues and returns the GitHub username of all users who have closed an issue in the 'Answer These Questions' repository
   const closers = soloIssues.map(async issue => await issue.then(res => res.closed_by.login)); 
@@ -43,11 +44,11 @@ const calculateScores = async closedIssues =>{
 }
 
 //Returns an array of nested arrays that represent the user and their score => ['wijohnst',3]
-const getScores = async () =>{
+const getScores = async (authToken) =>{
   
   const scores = await getIssues() //Gets all issues
                   .then(allIssues => getClosedIssues(allIssues)) //Returns only the closed issues
-                  .then(closedIssues => calculateScores(closedIssues)) //Calculates user scores for those closed issues
+                  .then(closedIssues => calculateScores(closedIssues, authToken)) //Calculates user scores for those closed issues
                   .then(scoresObject => Object.entries(scoresObject)) //Converts score object into an array for rendering
                   .then(scoresArray => scoresArray.map(score => score)); //Maps over key/val array
 
@@ -56,11 +57,12 @@ const getScores = async () =>{
 
 export default function Leaderbord({advanceView}) {
 
+  const { authToken } = useContext(AppContext);
   const [scores, setScores] = useState(null);
     
   useEffect(() => {
-    getScores().then(res => setScores(res))
-  },[])
+    getScores(authToken).then(res => setScores(res))
+  },[authToken])
 
   if(scores){ //Conditionally render based on scores array resolution
     return(
