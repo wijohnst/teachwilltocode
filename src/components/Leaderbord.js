@@ -71,8 +71,9 @@ export default function Leaderbord({advanceView}) {
   if(scores){ //Conditionally render based on scores array resolution
     return(  
       <LeaderbordWrapper>
-        {/* return mapping here */}
-        {scores}
+        <h1>Leaderbord</h1>
+        <hr />
+        {scores.map(score => <p>Score</p>)}
         <button onClick={() => advanceView(0)}>Back</button>
       </LeaderbordWrapper>
       
