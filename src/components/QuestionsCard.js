@@ -31,7 +31,7 @@ const Data = styled.span`
 `
 const Status = styled.span`
   font-family: 'Courier New', serif;
-  color: ${(props) => (props.status === "open" ? 'green' : 'red')};
+  color: ${(props) => (props.status === "open" ? 'lightgreen' : 'red')};
 `
 
 const ModalLink = styled.p`
