@@ -9,12 +9,10 @@ export default function AppContextProvider(props){
   const [token, setToken] = useState(undefined);
 
   useEffect(() => {
-    console.log('Getting token...')
     getToken().then(res => (setToken(res.token)))
   }, [])
 
-  useEffect(() => {
-    console.log('Fetching open issues from Context Provider...');
+  useEffect(() => { 
     getIssues(token).then(response => (setIssues(response)));
   },[token])
 
