@@ -28,11 +28,13 @@ button{
   font-weight: 300;
   border-radius: 5px;
   margin: 5px;
+  color: white;
+  background-color: black;
 }
 
 button:hover{
   cursor: pointer;
-  color: darkslategray;
+  color: lightgreen;
 }
 
 li{
