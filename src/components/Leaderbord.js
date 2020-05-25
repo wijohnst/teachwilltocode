@@ -81,10 +81,11 @@ export default function Leaderbord({advanceView}) {
             <u>Points:</u><InfoText>{score[index + 1]}</InfoText>
           </UserPointsGroup>
           )}
-        <button onClick={() => advanceView(0)}>Back</button>
         <hr />
         <h3>How to Submit an Answer</h3>
         <HowItWorks />
+        <hr />
+        <button onClick={() => advanceView(0)}>Back</button>
       </LeaderbordWrapper>
       
      )
