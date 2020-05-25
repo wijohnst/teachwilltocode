@@ -42,9 +42,4 @@ export default function App() {
       </AppContextProvider>
       )
   }
-  
-  }
-  
-
-
-//force deploy
+}
