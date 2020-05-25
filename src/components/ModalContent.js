@@ -18,6 +18,7 @@ const CloseButton = styled.p`
     cursor: pointer;
   }
 `
+
 export default function ModalContent(props) {
 
   const {handleClose, issueDetail, status, path} = props;
@@ -42,7 +43,9 @@ export default function ModalContent(props) {
 
     return(
       <ModalContentWrapper>
-        <p onClick={() => handleClose()}>x</p>
+        <CloseButton onClick={() => handleClose()}>x</CloseButton>
+        <h2>Question #{path}</h2>
+        <hr style={{maxWidth: "90%"}}/>
         <a href={markdownUrl} target="_blank" rel="noopener noreferrer">Answer</a>
       </ModalContentWrapper>
     )
