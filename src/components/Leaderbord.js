@@ -74,10 +74,10 @@ export default function Leaderbord({advanceView}) {
         <h1>Leaderbord</h1>
         <hr />
         {scores.map((score, index) => 
-          <div>
-            <p>{score[index]}</p>
-            <p>{score[index + 1]}</p>
-          </div>
+          <UserPointsGroup key={`PointsGroup${index}`}>
+            <p><u>User: </u><InfoText>{score[index]}</InfoText></p>
+            <p><u>Points:</u><InfoText>{score[index + 1]}</InfoText></p>
+          </UserPointsGroup>
           )}
         <button onClick={() => advanceView(0)}>Back</button>
       </LeaderbordWrapper>
