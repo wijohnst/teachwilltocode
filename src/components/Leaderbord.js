@@ -4,6 +4,7 @@ import AppContext from '../AppContext'
 import { getIssues } from '../utils/getIssues'
 import { getClosedIssues } from '../utils/getClosedIssues';
 import { getSoloIssue } from '../utils/getSoloIssue'
+import HowItWorks from './HowItWorks';
 
 
 const LeaderbordWrapper = styled.div`
@@ -81,6 +82,9 @@ export default function Leaderbord({advanceView}) {
           </UserPointsGroup>
           )}
         <button onClick={() => advanceView(0)}>Back</button>
+        <hr />
+        <h3>How to Submit an Answer</h3>
+        <HowItWorks />
       </LeaderbordWrapper>
       
      )
