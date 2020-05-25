@@ -13,6 +13,7 @@ const LeaderbordWrapper = styled.div`
 const UserPointsGroup = styled.div`
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
   max-width: 75%;
   margin: 0 auto;
   margin-bottom: 2px;
@@ -75,8 +76,8 @@ export default function Leaderbord({advanceView}) {
         <hr />
         {scores.map((score, index) => 
           <UserPointsGroup key={`PointsGroup${index}`}>
-            <p><u>User: </u><InfoText>{score[index]}</InfoText></p>
-            <p><u>Points:</u><InfoText>{score[index + 1]}</InfoText></p>
+            <u>User: </u><InfoText>{score[index]}</InfoText>
+            <u>Points:</u><InfoText>{score[index + 1]}</InfoText>
           </UserPointsGroup>
           )}
         <button onClick={() => advanceView(0)}>Back</button>
