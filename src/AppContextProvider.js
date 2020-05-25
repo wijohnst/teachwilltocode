@@ -10,13 +10,12 @@ export default function AppContextProvider(props){
 
   useEffect(() => {
     console.log('Getting token...')
-    getToken().then(res => (setToken("test")))
+    getToken().then(res => (setToken(res.token)))
   }, [])
 
   useEffect(() => {
     console.log('Fetching open issues from Context Provider...');
     getIssues(token).then(response => (setIssues(response)));
-    
   },[token])
 
   return(

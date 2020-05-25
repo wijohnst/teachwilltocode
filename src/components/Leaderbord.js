@@ -46,7 +46,7 @@ const calculateScores = async (closedIssues, authToken) =>{
 //Returns an array of nested arrays that represent the user and their score => ['wijohnst',3]
 const getScores = async (authToken) =>{
   
-  const scores = await getIssues() //Gets all issues
+  const scores = await getIssues(authToken) //Gets all issues
                   .then(allIssues => getClosedIssues(allIssues)) //Returns only the closed issues
                   .then(closedIssues => calculateScores(closedIssues, authToken)) //Calculates user scores for those closed issues
                   .then(scoresObject => Object.entries(scoresObject)) //Converts score object into an array for rendering
@@ -65,7 +65,7 @@ export default function Leaderbord({advanceView}) {
   },[authToken])
 
   if(scores){ //Conditionally render based on scores array resolution
-    return(
+    return(  
       <LeaderbordWrapper>
         <h1>Leaderbord</h1>
         <hr />
