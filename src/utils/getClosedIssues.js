@@ -1,5 +1,4 @@
 export const getClosedIssues = async issues =>{
-  console.log('Getting closed issues...')
 
   const closedIssues = await issues.filter(issue => {
     if(issue.state === 'closed'){

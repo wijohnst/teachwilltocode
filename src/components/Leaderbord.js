@@ -23,12 +23,15 @@ const UserPointsGroup = styled.div`
 const InfoText = styled.p`
   font-family: 'Courier New', serif;
 `
+
 //Returns a scores object {username : string, score : int}
 const calculateScores = async (closedIssues, authToken) =>{ 
   
   //A solo issue is different from the result of getIssues() because it includes the 'closed_by' key/value pair
   const soloIssues = closedIssues.map(({number}) => getSoloIssue(number, authToken).then(res => res)); 
   
+  
+  console.log("Solo Issues:",Promise.all(soloIssues));
   //Maps over the array of solo issues and returns the GitHub username of all users who have closed an issue in the 'Answer These Questions' repository
   const closers = soloIssues.map(async issue => await issue.then(res => res.closed_by.login)); 
   
@@ -39,7 +42,7 @@ const calculateScores = async (closedIssues, authToken) =>{
                   scoreObj[closer] = count + 1;
                   return scoreObj;
                 },{}));
-
+  console.log("Calculate Scores returned",scores);     
   return  scores;
 }
 
@@ -51,7 +54,8 @@ const getScores = async (authToken) =>{
                   .then(closedIssues => calculateScores(closedIssues, authToken)) //Calculates user scores for those closed issues
                   .then(scoresObject => Object.entries(scoresObject)) //Converts score object into an array for rendering
                   .then(scoresArray => scoresArray.map(score => score)); //Maps over key/val array
-
+  console.log("Get scores returned:", scores);
+  
   return scores;
 }
 
