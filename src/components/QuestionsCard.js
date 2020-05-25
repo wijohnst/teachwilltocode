@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import moment from 'moment'
 import Modal from 'react-modal'
 import { getSoloIssue } from '../utils/getSoloIssue'
+import { getScreens } from '../utils/getScreens'
 
 import AppContext from '../AppContext'
 import ModalContent from './ModalContent'
@@ -11,6 +12,10 @@ const QuestionsCardWrapper = styled.div`
   max-width: 50%;
   margin: 0 auto;
   margin-bottom: 5px;
+
+  @media (max-width: ${getScreens('tablet')}){
+    max-width: 90%;
+  }
 `
 const InfoWrapper = styled.div`
   display: flex;
