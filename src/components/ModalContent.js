@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import Markdown from 'markdown-to-jsx'
 
 import { getMarkdownUrl } from '../utils/getMarkdownUrl'
+import AppContext from '../AppContext'
 
 const ModalContentWrapper = styled.div`
   color: black;
@@ -10,11 +11,12 @@ const ModalContentWrapper = styled.div`
 export default function ModalContent(props) {
 
   const {handleClose, issueDetail, status, path} = props;
+  const { authToken } = useContext(AppContext);
 
   const [markdownUrl, setMarkdownUrl] = useState(undefined);
 
   useEffect(() => {
-    getMarkdownUrl(path).then(response => setMarkdownUrl(response))
+    getMarkdownUrl(authToken, path).then(response => setMarkdownUrl(response))
   })
 
   if(status === 'open'){

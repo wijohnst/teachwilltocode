@@ -2,6 +2,8 @@ import axios from 'axios'
 
 export const getIssues = async token =>{
 
+  console.log(token);
+  
   const targetUrl = "https://api.github.com/repos/wijohnst/AnswerTheseQuestions/issues?state=all";
 
   try{

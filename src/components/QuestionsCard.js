@@ -1,9 +1,10 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect, Fragment, useContext } from 'react'
 import styled from 'styled-components'
 import moment from 'moment'
 import Modal from 'react-modal'
 import { getSoloIssue } from '../utils/getSoloIssue'
 
+import AppContext from '../AppContext'
 import ModalContent from './ModalContent'
 
 const QuestionsCardWrapper = styled.div`
@@ -34,12 +35,13 @@ export default function QuestionCard({data}) {
   const [soloIssue, setSoloIssue] = useState(undefined);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   
+  const { authToken } = useContext(AppContext);
 
   const {title, state, created_at, closed_at, number, body} = data;
   
   useEffect(() => {
-    getSoloIssue(number).then(response => setSoloIssue(response));
-  },[number])
+    getSoloIssue(number, authToken).then(response => setSoloIssue(response));
+  },[number, authToken])
 
   const handleClick = number =>{
     setModalIsOpen(true);
